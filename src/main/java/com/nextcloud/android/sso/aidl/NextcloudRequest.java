@@ -32,6 +32,7 @@ public class NextcloudRequest implements Serializable {
     private Map<String, List<String>> header = new HashMap<>();
     private Map<String, String> parameter = new HashMap<>();
     private String requestBody;
+    private String requestFilePathToUpload;
     private String url;
     private String token;
     private String packageName;
@@ -68,6 +69,11 @@ public class NextcloudRequest implements Serializable {
 
         public Builder setRequestBody(String requestBody) {
             ncr.requestBody = requestBody;
+            return this;
+        }
+
+        public Builder setRequestFilePathToUpload(String filePath) {
+            ncr.requestFilePathToUpload = filePath;
             return this;
         }
 
@@ -111,6 +117,10 @@ public class NextcloudRequest implements Serializable {
 
     public String getRequestBody() {
         return this.requestBody;
+    }
+
+    public String getRequestFilePathToUpload() {
+        return this.requestFilePathToUpload;
     }
 
     public String getUrl() {
