@@ -324,7 +324,7 @@ public class NextcloudAPI {
                         });
 
 
-        ParcelFileDescriptor output = mService.performNextcloudRequest(input, requestBodyParcelFileDescriptor);
+        ParcelFileDescriptor output = mService.performNextcloudRequestAndBodyStream(input, requestBodyParcelFileDescriptor);
 
         return output;
     }
