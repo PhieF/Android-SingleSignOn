@@ -18,5 +18,6 @@
 package com.nextcloud.android.sso.aidl;
 
 interface IInputStreamService {
-    ParcelFileDescriptor performNextcloudRequest(in ParcelFileDescriptor input, in ParcelFileDescriptor requestBodyParcelFileDescriptor);
+    ParcelFileDescriptor performNextcloudRequestAndBodyStream(in ParcelFileDescriptor input, in ParcelFileDescriptor requestBodyParcelFileDescriptor);
+    ParcelFileDescriptor performNextcloudRequest(in ParcelFileDescriptor input);
 }
