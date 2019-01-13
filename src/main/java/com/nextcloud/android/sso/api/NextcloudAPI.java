@@ -243,11 +243,11 @@ public class NextcloudAPI {
      * @return InputStream answer from server as InputStream
      * @throws Exception or SSOException
      */
-    public InputStream performNetworkRequest(NextcloudRequest request) throws Exception {
+    public InputStream performNetworkRequest(NextcloudRequest request, InputStream requestBodyInputStream) throws Exception {
         InputStream os = null;
         Exception exception = null;
         try {
-            ParcelFileDescriptor output = performAidlNetworkRequest(request);
+            ParcelFileDescriptor output = performAidlNetworkRequest(request, requestBodyInputStream);
             os = new ParcelFileDescriptor.AutoCloseInputStream(output);
             exception = deserializeObject(os);
         } catch (ClassNotFoundException e) {
@@ -272,7 +272,7 @@ public class NextcloudAPI {
      * @return
      * @throws IOException
      */
-    private ParcelFileDescriptor performAidlNetworkRequest(NextcloudRequest request)
+    private ParcelFileDescriptor performAidlNetworkRequest(NextcloudRequest request, InputStream requestBodyInputStream)
             throws IOException, RemoteException, NextcloudApiNotRespondingException {
 
         // Check if we are on the main thread
@@ -302,7 +302,18 @@ public class NextcloudAPI {
                     }
                 });
 
-        ParcelFileDescriptor output = mService.performNextcloudRequest(input);
+        ParcelFileDescriptor requestBodyParcelFileDescriptor = null;
+        if(requestBodyInputStream != null)	
+            requestBodyParcelFileDescriptor = ParcelFileDescriptorUtil.pipeFrom(requestBodyInputStream,
+                new IThreadListener() {
+                            @Override
+                            public void onThreadFinished(Thread thread) {
+                                Log.d(TAG, "copy data from service finished");
+                            }
+                        });
+
+
+        ParcelFileDescriptor output = mService.performNextcloudRequest(input, requestBodyParcelFileDescriptor);
 
         return output;
     }
