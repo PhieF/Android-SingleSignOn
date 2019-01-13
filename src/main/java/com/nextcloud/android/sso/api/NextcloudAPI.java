@@ -235,11 +235,22 @@ public class NextcloudAPI {
         return result;
     }
 
+     /**
+     * The InputStreams needs to be closed after reading from it
+     *
+     * @param request {@link NextcloudRequest} request to be executed on server via Files app
+     * @return InputStream answer from server as InputStream
+     * @throws Exception or SSOException
+     */
+    public InputStream performNetworkRequest(NextcloudRequest request) throws Exception {
+        return performNetworkRequest(request, null);
+    }
 
     /**
      * The InputStreams needs to be closed after reading from it
      *
      * @param request {@link NextcloudRequest} request to be executed on server via Files app
+     * @param requestBodyInputStream inputstream to be sent to the server
      * @return InputStream answer from server as InputStream
      * @throws Exception or SSOException
      */
